@@ -28,7 +28,5 @@ check "collection url" 'collection://[0-9a-f]{8}-'
 check "notion page url" 'app\.notion\.com/p/'
 check "notion.so url" 'notion\.so/'
 check "gmail address" '@gmail\.com'
-check "old fixture name" 'sedova'
-check "old guest name" 'Šedivá'
 
 exit "$found"

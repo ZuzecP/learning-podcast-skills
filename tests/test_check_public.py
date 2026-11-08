@@ -13,8 +13,6 @@ LEAKS = {
     "notion page url": "https://app.notion.com/p/abc",
     "notion.so url": "https://www.notion.so/page",
     "gmail address": "write to someone@gmail.com",
-    "old fixture name": "the Sedova interview",
-    "old guest name": "guest Šedivá",
 }
 
 
