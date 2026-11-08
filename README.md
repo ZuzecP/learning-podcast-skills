@@ -1,5 +1,7 @@
 # learning-podcast-skills
 
+[![tests](https://github.com/ZuzecP/learning-podcast-skills/actions/workflows/test.yml/badge.svg)](https://github.com/ZuzecP/learning-podcast-skills/actions/workflows/test.yml)
+
 Claude Code skills that turn a link, several links or a topic into a NotebookLM (Gemini Notebook) Audio Overview built to fixed listening rules, and file a card for it in a Notion database.
 
 - `learning-podcast-setup`: guided first-time setup.
