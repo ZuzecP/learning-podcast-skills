@@ -1,0 +1,5 @@
+NAMES: The Czech names with special characters of the Czech alphabet are complicated to pronounce for a non-Czech speaker. Use either the first name or the surname, whichever does not have those special characters. If both have them, go with the simpler one.
+TONE: Calm, understated and factual. No hype, exclamations or staged surprise; no invented disagreement. Where the sources genuinely differ, discuss it calmly and say which source says what.
+FACTS: Say only what the sources support. Label every inference, generalisation or speculation as such ("this is an inference"). Do not invent examples, numbers or quotes.
+BRIEF: Keep the pacing brisk. Cover only the key takeaways and the context needed to make decisions with them.
+GAPS: Name the single most important gap in the sources or the topic.
