@@ -24,7 +24,7 @@ check() {
 
 check "home path" '/Users/'
 check "32-char id" '(^|[^0-9a-f])[0-9a-f]{32}([^0-9a-f]|$)'
-check "collection url" 'collection://'
+check "collection url" 'collection://[0-9a-f]{8}-'
 check "notion page url" 'app\.notion\.com/p/'
 check "notion.so url" 'notion\.so/'
 check "gmail address" '@gmail\.com'

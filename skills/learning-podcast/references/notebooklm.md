@@ -27,7 +27,7 @@ Help-centre facts (October 2026) plus what was observed in the app. New observat
 6. Summary. One source: copy the notebook summary NotebookLM shows. Two or more sources: that summary is written when the first source lands and is not updated (the web app has no regenerate control, checked 2026-10-25), so ask the chat. The chat answers from the ticked sources only; N is their number. `form_input` on the chat box "Ask a question or create something", then "Submit": "Write one paragraph of about 150 words that summarises what all <N> sources together say." The answer is complete when two reads 10 seconds apart match. Copy it without its citation numbers, and add "summary from chat" to the run notes.
 7. Generate: Studio (a tab in a narrow pane, a panel in a wide one). Check the Studio list for an audio from this run first (resume). Click the "Audio Overview" tile: it opens "Customise Audio Overview" and does not generate. In the dialog:
    - Format: click the card's title text (Deep dive, Brief, Critique, Debate); clicking the hidden radio input does nothing.
-   - "Choose language": English.
+   - "Choose language": the config's `language` (default English). If the dialog does not offer it, choose English and say so in the report and the run notes.
    - Length: Deep dive offers Short, Default, Long; Critique and Debate Short and Default; Brief none. Use the `length.py` result; if it isn't offered, Default.
    - Focus box "What should the AI hosts focus on in this episode?": first read its `maxlength` with `javascript_tool`. Not the `rules.md` limit: see the skill's Failures table. Then paste the instruction block.
    - "Sources: N source" must equal the number of In sources; if it counts unticked ones, fix the selection there before generating.

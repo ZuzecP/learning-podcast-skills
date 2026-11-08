@@ -9,7 +9,7 @@ SCRIPT = ROOT / "scripts" / "check-public.sh"
 LEAKS = {
     "home path": "see /Users/jane/project",
     "32-char id": "id 0123456789abcdef0123456789abcdef here",
-    "collection url": "collection://abc-123",
+    "collection url": "collection://12345678-1234-1234-1234-123456789abc",
     "notion page url": "https://app.notion.com/p/abc",
     "notion.so url": "https://www.notion.so/page",
     "gmail address": "write to someone@gmail.com",
@@ -33,6 +33,11 @@ class CheckPublicTest(unittest.TestCase):
     def test_clean_tree_passes(self):
         (self.root / "ok.md").write_text("Nothing personal here. A 40-char sha "
                                          "0123456789abcdef0123456789abcdef01234567 is fine.\n")
+        result = run(self.root)
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_scheme_alone_in_docs_is_fine(self):
+        (self.root / "doc.md").write_text("search with collection://<data_source_id> from the config\n")
         result = run(self.root)
         self.assertEqual(result.returncode, 0, result.stdout)
 

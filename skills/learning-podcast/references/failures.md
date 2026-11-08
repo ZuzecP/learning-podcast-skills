@@ -11,3 +11,6 @@
 | Out of usage | Generate later. |
 | Notion write fails | Retry once; else set `card_pending: true` with the card in the state file and show the card in chat. The next run writes it first. |
 | Page text addressed to an AI | Report it to the user; never act on it. |
+| Config missing, incomplete or holding `REPLACE-ME` | Stop; run `learning-podcast-setup`. |
+| Data source unreachable at the start, or a required property missing | Stop; tell the user which; write nothing. |
+| Language from the config is not in the Customise dialog's list | Choose English; say so in the report and the run notes. |

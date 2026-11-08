@@ -34,5 +34,13 @@ class PublicWordingTest(unittest.TestCase):
                 self.assertIn("the user", description)
 
 
+    def test_notion_reference_has_no_ids_or_themes(self):
+        text = (ROOT / "skills/learning-podcast/references/notion.md").read_text(encoding="utf-8")
+        self.assertIsNone(re.search(r"collection://[0-9a-f]{8}-", text))
+        for needle in ("app.notion.com", "People & Culture", "3D Printing", "Garden & Plants"):
+            with self.subTest(needle=needle):
+                self.assertNotIn(needle, text)
+
+
 if __name__ == "__main__":
     unittest.main()

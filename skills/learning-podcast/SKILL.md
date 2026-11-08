@@ -15,7 +15,7 @@ Not for: finding earlier podcasts (search Notion directly), or writing only the 
 
 | Step | Do | Detail |
 |---|---|---|
-| 0 Intake | Read `runs/`; resume a matching run; overrides: format (default Deep Dive), length, "for <name>", "dry run" | `references/run-state.md` |
+| 0 Intake | Config gate (below), then read `runs/`; resume a matching run; overrides: format (default Deep Dive), length, "for <name>", "dry run" | `references/run-state.md` |
 | 1 Scenario | Single (one source), Multiple (two or more), Research (a topic, or "research" / "find more"; the user's links are seeds, kept, counted in the cap) | |
 | 2 Sources | Per source: title, URL or path, kind (`conversation`, `talk`, `written`, `other`), minutes or words, Notion source type, people named | below |
 | 3 Research | Scope questions first, then a. deep-research skill shortlist; b. notebook and Deep Research (may be submitted before a.; results opened only after a.'s shortlist is saved); c. cross-check | `references/research.md` |
@@ -28,13 +28,17 @@ Not for: finding earlier podcasts (search Notion directly), or writing only the 
 
 Failures (sign-in, failed imports, box limit, Notion errors): `references/failures.md`.
 
+## Config gate
+
+Before step 0, read `learning-podcast.config.json` in the project folder. Stop and run `learning-podcast-setup` when the file is missing, lacks `"setup_completed": true`, or any value is `REPLACE-ME` (the shipped `config.example.json` is a template, never a valid config). Otherwise fetch the config's `data_source_id` with `notion-fetch` once, before touching NotebookLM: if it is unreachable or lacks a property named in `notion.md`, stop, tell the user which, and write nothing to Notion or NotebookLM. Never fall back to another database.
+
 ## Steps in detail
 
 **2. Sources.** The user's links and YouTube: `get_page_text` in the built-in browser; a paper link of the user's on a site that `research.md` sends to the open copy (PubMed Central, academic.oup.com, ResearchGate): find that copy with WebSearch and WebFetch instead, and log the swap. Spotify: the same episode on YouTube (WebSearch) or a transcript on the show's site (WebFetch). Same episode means same show, same title, length within a few minutes; a clip or highlight cut doesn't count. Log the swap. Local file: `wc -w`; adding it is `notebooklm.md` step 4.
 
 **3. Research.** Follow `references/research.md`: the deep-research skill builds your shortlist, NotebookLM's Deep Research builds its list, and the cross-check table there decides what goes in.
 
-**6. Prompt.** `notion-search` the data source with the keywords of the main subject (the one that sets the Theme); no earlier card on it means first-time true. Then invoke `podcast-prompt` with the summary, sources (title, kind), people, format and flag.
+**6. Prompt.** `notion-search` the data source with the keywords of the main subject (the one that sets the Theme); no earlier card on it means first-time true. Then invoke `podcast-prompt` with the summary, sources (title, kind), people, format, flag, and the config's `names_rule` and `rules_file`.
 
 **7. Generate.** Length: the user's override, else `python3 "<skill dir>/scripts/length.py" --format "<format>" <kind>:<n>m|w ...` (one argument per source; the path has a space, keep the quotes). With several sources the sizes don't change the result: pass `<kind>:0w` for any size you don't know. The focus box gets the `podcast-prompt` block exactly. Click Generate now (Generate later when out of usage), then go straight to step 8.
 
