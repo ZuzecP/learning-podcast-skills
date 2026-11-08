@@ -1,0 +1,16 @@
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+__pycache__/
+.remember/
+.superpowers/
+learning-podcast.config.json
+rules.local.md
+runs/
+reports/
+research_notes/
+plans/
+specs/
+handovers/
