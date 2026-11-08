@@ -95,10 +95,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--names", action="store_true", help="a person named in the sources has special characters in their name")
     parser.add_argument("--first-time", action="store_true")
     parser.add_argument("--limit", type=int, help="override the limit in rules.md")
+    parser.add_argument("--rules", type=Path, default=RULES, help="rules file to use instead of the shipped rules.md")
     args = parser.parse_args(argv)
     try:
-        block, cuts = assemble(args.format, args.names, args.first_time, args.limit)
-    except ValueError as err:
+        block, cuts = assemble(args.format, args.names, args.first_time, args.limit, args.rules)
+    except (ValueError, OSError) as err:
         print(f"error: {err}", file=sys.stderr)
         return 2
     sys.stdout.write(block)

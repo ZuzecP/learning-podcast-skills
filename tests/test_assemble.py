@@ -132,5 +132,29 @@ class CliTest(unittest.TestCase):
         self.assertIn("too long even after all cuts", err)
 
 
+    def test_rules_option_uses_the_given_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rules = Path(tmp) / "rules.local.md"
+            rules.write_text(MINI_RULES, encoding="utf-8")
+            code, out, _ = self.run_main(["--format", "Brief", "--rules", str(rules)])
+        self.assertEqual(code, 0)
+        self.assertIn("BRIEF: Brisk.", out)
+
+    def test_rules_file_missing_a_text_exits_2_and_names_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rules = Path(tmp) / "rules.local.md"
+            rules.write_text(MINI_RULES.replace("FACTS: Sources only.\n", ""), encoding="utf-8")
+            code, out, err = self.run_main(["--format", "Brief", "--rules", str(rules)])
+        self.assertEqual(code, 2)
+        self.assertEqual(out, "")
+        self.assertIn("FACTS", err)
+
+    def test_rules_file_not_found_exits_2(self):
+        code, out, err = self.run_main(["--format", "Brief", "--rules", "/nonexistent/rules.md"])
+        self.assertEqual(code, 2)
+        self.assertEqual(out, "")
+        self.assertIn("error:", err)
+
+
 if __name__ == "__main__":
     unittest.main()

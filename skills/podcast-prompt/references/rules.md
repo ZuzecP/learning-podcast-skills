@@ -6,19 +6,33 @@ Instruction box limit: 5000 characters (textarea maxlength, measured 2026-10-06)
 
 `scripts/assemble.py` builds the block from this file: one line per section, label in capitals and a colon, in the order below, only where the table includes it. No greetings and no explanations of why. To change wording, edit the texts under "Section texts"; never edit a generated block by hand.
 
-| Order | Label | Her rule | Deep Dive, Critique, Debate | Brief |
-|---|---|---|---|---|
-| 1 | NAMES | 1 | when a person named in the sources has a Czech name with special characters of the Czech alphabet | same |
-| 2 | TONE | 2 | always | always |
-| 3 | FACTS | 5 | always | always |
-| 4 | BRIEF | 7 | never | always |
-| 5 | DEPTH | 6 | always | never |
-| 6 | LEVELS | 3 | always | never |
-| 7 | ACTIONS | 4 | always | never |
-| 8 | GAPS | 8 | always, full text | always, Brief text |
-| 9 | STUDY FURTHER | 9 | first-time topics only | never |
+| Order | Label | Deep Dive, Critique, Debate | Brief |
+|---|---|---|---|
+| 1 | NAMES | optional locale rule: only when the config sets `names_rule` to true and a person named in the sources has a Czech name with special characters of the Czech alphabet | same |
+| 2 | TONE | always | always |
+| 3 | FACTS | always | always |
+| 4 | BRIEF | never | always |
+| 5 | DEPTH | always | never |
+| 6 | LEVELS | always | never |
+| 7 | ACTIONS | always | never |
+| 8 | GAPS | always, full text | always, Brief text |
+| 9 | STUDY FURTHER | first-time topics only | never |
 
 Cut order when the block is longer than the limit, one section at a time, skipping sections the block doesn't have: STUDY FURTHER, ACTIONS, LEVELS, DEPTH, GAPS. Never cut NAMES, TONE or FACTS.
+
+## Why each rule exists
+
+These are the author's defaults. Copy this file to `rules.local.md` in your project folder and edit the copy to make them yours; the copy replaces this file as a whole.
+
+- NAMES: hosts mispronounce names with Czech diacritics; asking for the simpler of first name or surname avoids it. Optional: off unless `names_rule` is true in the config.
+- TONE: audio hosts drift toward hype and staged surprise; this keeps them calm and factual.
+- FACTS: stops the hosts from inventing examples, numbers or quotes; inferences must be labelled.
+- BRIEF: a Brief episode has no length setting, so pacing is steered with this line.
+- DEPTH: fewer points covered thoroughly teach more than many points covered briefly.
+- LEVELS: insights for three expertise levels make one episode useful to beginners and experts.
+- ACTIONS: ends the episode with small steps the listener can start today.
+- GAPS: names what the sources leave out, so the episode does not sound more certain than the evidence.
+- STUDY FURTHER: for a first-time topic, points to where to learn more.
 
 ## Section texts
 
