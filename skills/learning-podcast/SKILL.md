@@ -9,7 +9,7 @@ description: Use when the user pastes one or more sources (YouTube, podcast or S
 
 Turns the user's sources or topic into a NotebookLM Audio Overview built from the `podcast-prompt` block, and files a card in the user's card store: the Notion "Podcasts" database or a local folder of Markdown files (config `backend`). A normal run needs nothing from the user after their message, except a research run's scope questions: every choice that shapes the audio is fixed by a rule or a script here. Theme and tags are judgement; note them in the run notes.
 
-Not for: finding earlier podcasts (search Notion directly), or writing only the prompt (`podcast-prompt`).
+Not for: finding earlier podcasts (search the card store directly), or writing only the prompt (`podcast-prompt`).
 
 ## Quick reference
 
@@ -17,16 +17,16 @@ Not for: finding earlier podcasts (search Notion directly), or writing only the 
 |---|---|---|
 | 0 Intake | Config gate (below), then read `runs/`; resume a matching run; overrides: format (default Deep Dive), length, "for <name>", "dry run" | `references/run-state.md` |
 | 1 Scenario | Single (one source), Multiple (two or more), Research (a topic, or "research" / "find more"; the user's links are seeds, kept, counted in the cap) | |
-| 2 Sources | Per source: title, URL or path, kind (`conversation`, `talk`, `written`, `other`), minutes or words, Notion source type, people named | below |
+| 2 Sources | Per source: title, URL or path, kind (`conversation`, `talk`, `written`, `other`), minutes or words, card source type, people named | below |
 | 3 Research | Scope questions first, then a. deep-research skill shortlist; b. notebook and Deep Research (may be submitted before a.; results opened only after a.'s shortlist is saved); c. cross-check | `references/research.md` |
 | 4 Notebook | Create or reopen; add sources; wait for processing; check every source title, untick failed ones, rename unreadable titles; set the title (card Name; Markdown: from `cards.py name`) | `references/notebooklm.md` 1 to 5 |
 | 5 Summary | One source: NotebookLM's summary. Two or more: a summary of all of them from NotebookLM's chat | `notebooklm.md` 6 |
 | 6 Prompt | First-time flag from a search of the card store, then `podcast-prompt` | `references/notion.md` or `references/markdown.md` |
 | 7 Generate | Length from `length.py`; Customise; Generate now | `notebooklm.md` 7 |
 | 8 Card | Every property, every body section | `notion.md` or `markdown.md` |
-| 9 Report | 3 to 5 lines: title; format and length; sources used, dropped or swapped and why; theme (new or not); Notion link | |
+| 9 Report | 3 to 5 lines: title; format and length; sources used, dropped or swapped and why; theme (new or not); card link or file path | |
 
-Failures (sign-in, failed imports, box limit, Notion errors): `references/failures.md`.
+Failures (sign-in, failed imports, box limit, card write errors): `references/failures.md`.
 
 ## Config gate
 

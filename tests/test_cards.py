@@ -267,5 +267,44 @@ class CliTest(FolderTestCase):
         self.assertEqual((code, out["reason"]), (2, "bad_input"))
 
 
+class HandEditedFrontmatterTest(FolderTestCase):
+    def make(self, name, front):
+        path = self.folder / f"{name}.md"
+        path.write_text("---\n" + front + "---\n\n## Summary\nText.\n", encoding="utf-8")
+        return path
+
+    def test_inline_list_single_quotes_and_bare_string_tag(self):
+        path = self.make("a", "theme: 'Career'\ntags: [alpha, beta]\nfor: 'Me'\n")
+        got = cards.read_card(path)
+        self.assertEqual((got["theme"], got["tags"], got["for"]), ("Career", ["alpha", "beta"], "Me"))
+        path = self.make("b", "theme: Career\ntags: solo\n")
+        self.assertEqual(cards.read_card(path)["tags"], ["solo"])
+
+    def test_unindented_block_list(self):
+        path = self.make("c", "theme: Career\ntags:\n- gamma\n- delta\n")
+        self.assertEqual(cards.read_card(path)["tags"], ["gamma", "delta"])
+
+    def test_scan_gives_whole_tags_from_hand_edited_files(self):
+        self.make("a", "theme: Career\ntags: [alpha, beta]\nfor: 'Me'\n")
+        self.make("b", "theme: Career\ntags: solo\nfor: Me\n")
+        got = cards.scan(self.folder)
+        self.assertEqual(got["tags"], ["alpha", "beta", "solo"])
+        self.assertEqual(got["for"], ["Me"])
+
+
+class OutsideFolderTest(FolderTestCase):
+    def test_symlink_pointing_outside_is_refused(self):
+        outside = tempfile.TemporaryDirectory()
+        try:
+            target = Path(outside.name) / "t.md"
+            (self.folder / "Psychological safety.md").symlink_to(target)
+            with self.assertRaises(cards.CardError) as ctx:
+                cards.write_card(self.folder, sample())
+            self.assertEqual(ctx.exception.reason, "outside_folder")
+            self.assertFalse(target.exists())
+        finally:
+            outside.cleanup()
+
+
 if __name__ == "__main__":
     unittest.main()

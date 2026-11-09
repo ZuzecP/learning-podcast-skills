@@ -11,7 +11,7 @@ One JSON file per run: `runs/<YYYY-MM-DD>-<slug>.json` in the project folder (sl
 - `sources`: one entry per source: title, url or path, kind, size (only for sources that go in; null otherwise), card source type, origin (You = the user's links, Claude, NotebookLM, Both), in or out, reason
 - `notebook_url`, `prompt`, `run_notes`
 - `done`: the steps finished, with 3a, 3b and 3c as separate entries
-- `card_url`; or `card_pending: true` plus `card` (properties and body) when the card write failed
+- `card_url` (the Notion page URL, or the file path of the Markdown card); or `card_pending: true` plus `card` (properties and body) when the card write failed
 
 ## At intake (step 0)
 

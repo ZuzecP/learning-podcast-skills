@@ -166,6 +166,8 @@ _ESCAPE = re.compile(r'\\(["\\n])')
 
 def _parse_scalar(raw):
     raw = raw.strip()
+    if len(raw) >= 2 and raw[0] == raw[-1] == "'":
+        return raw[1:-1].replace("''", "'")
     if len(raw) >= 2 and raw[0] == raw[-1] == '"':
         return _ESCAPE.sub(lambda m: "\n" if m.group(1) == "n" else m.group(1), raw[1:-1])
     if raw == "true":
@@ -173,6 +175,16 @@ def _parse_scalar(raw):
     if raw == "false":
         return False
     return raw
+
+
+def _as_list(value):
+    """A list from a list, an inline [a, b] list or a single bare value."""
+    if isinstance(value, list):
+        return value
+    text = str(value).strip()
+    if text.startswith("[") and text.endswith("]"):
+        return [_parse_scalar(part) for part in text[1:-1].split(",") if part.strip()]
+    return [text] if text else []
 
 
 def read_card(path):
@@ -184,7 +196,7 @@ def read_card(path):
     card = {"name": Path(path).stem}
     key = None
     for line in lines[1:end]:
-        item = re.match(r"^  - (.*)$", line)
+        item = re.match(r"^\s*- (.*)$", line)
         if item and key is not None and isinstance(card.get(key), list):
             card[key].append(_parse_scalar(item.group(1)))
             continue
@@ -200,6 +212,8 @@ def read_card(path):
             card[key] = _parse_scalar(raw)
     if "theme" not in card:
         return None
+    for list_key in ("tags", "source_types"):
+        card[list_key] = _as_list(card.get(list_key, []))
     body = lines[end + 1:]
     summary = []
     inside = False
