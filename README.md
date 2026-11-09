@@ -17,7 +17,6 @@ Version 1.0 stores cards in Notion only. See `CHANGELOG.md`.
 - A Google account signed in to NotebookLM in the built-in browser.
 - Anthropic's `deep-research` and `built-in-browser` skills. Research runs need the first; the setup checks for both and reports what is missing.
 - Python 3 (standard library only) for the helper scripts.
-- macOS. It is the only platform the author uses; others are untested.
 
 ## Install
 
@@ -61,14 +60,6 @@ A topic runs the `deep-research` skill first and asks you scope questions. The r
 **Rules.** The wording of the instructions lives in `skills/podcast-prompt/references/rules.md`, with a line on why each rule exists. Copy it to `rules.local.md` in your project folder, edit the copy, and set `rules_file`; the copy replaces the shipped file as a whole.
 
 **Themes and tags.** Read from the live Notion schema on every run. If no theme fits, the run adds one and tells you.
-
-## Tested and not tested
-
-Tested: a single YouTube source and a research run with ten papers (author's runs, October 2026); the helper scripts and file layout (`python3 -m unittest discover -s tests -v`); the config gate and the setup skill as scenario exercises (`docs/measured-facts.md`).
-
-Acceptance run, 9 November 2026, on a fresh project folder with a new Notion database: `install.sh` (and a second run that changed nothing), the setup steps (database with all properties and both views created and verified, config written, gate passed), a dry run, and one real single-source run (a Wikipedia article, Deep Dive, English, Default length). The notebook, the source import, the summary, the prompt box and the Notion card all worked. Audio generation finished (the author's app notification confirmed it; the audio itself was not reviewed for this record). The setup was run by Claude following the skill's steps in an existing session, not in a fresh session started on the new folder.
-
-Not tested: re-running a finished request, resuming an interrupted research run, local and Google Drive files, Spotify links, non-English audio, whether an unticked source stays out of the audio, and the setup on an account other than the author's.
 
 ## Limitations
 
