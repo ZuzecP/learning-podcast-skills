@@ -2,18 +2,18 @@
 
 [![tests](https://github.com/ZuzecP/learning-podcast-skills/actions/workflows/test.yml/badge.svg)](https://github.com/ZuzecP/learning-podcast-skills/actions/workflows/test.yml)
 
-Claude Code skills that turn a link, several links or a topic into a NotebookLM (Gemini Notebook) Audio Overview built to fixed listening rules, and file a card for it in a Notion database.
+Claude Code skills that turn a link, several links or a topic into a NotebookLM (Gemini Notebook) Audio Overview built to fixed listening rules, and file a card for it in a Notion database or in a local folder of Markdown files.
 
 - `learning-podcast-setup`: guided first-time setup.
-- `learning-podcast`: runs the whole flow in the Claude app's built-in browser and writes the Notion card.
+- `learning-podcast`: runs the whole flow in the Claude app's built-in browser and writes the card.
 - `podcast-prompt`: builds the Audio Overview instructions from a rules file.
 
-Version 1.0 stores cards in Notion only. See `CHANGELOG.md`.
+Cards are stored in Notion or in a local folder of Markdown files. See `CHANGELOG.md`.
 
 ## Prerequisites
 
 - The Claude desktop app with the Code tab and its built-in browser. The flow drives NotebookLM there.
-- A Notion connector with write access.
+- A Notion connector with write access, or a local folder for Markdown cards.
 - A Google account signed in to NotebookLM in the built-in browser.
 - Anthropic's `deep-research` and `built-in-browser` skills. Research runs need the first; the setup checks for both and reports what is missing.
 - Python 3 (standard library only) for the helper scripts.
@@ -48,7 +48,10 @@ A topic runs the `deep-research` skill first and asks you scope questions. The r
 
 | Key | Meaning | Default |
 |---|---|---|
-| `data_source_id`, `database_url` | Your Notion database | written by the setup |
+| `backend` | Where cards are stored: `notion` or `markdown` | `notion` |
+| `cards_folder` | Folder of Markdown cards (`markdown` only) | written by the setup |
+| `themes` | Starter themes (`markdown` only) | written by the setup |
+| `data_source_id`, `database_url` | Your Notion database (`notion` only) | written by the setup |
 | `for_default` | Default value of the card's `For` property | `Me` |
 | `language` | Audio Overview language, chosen in NotebookLM's "Choose language" list | `English` |
 | `names_rule` | Add the Czech-names line to the prompt (see `rules.md`) | `false` |
@@ -59,13 +62,13 @@ A topic runs the `deep-research` skill first and asks you scope questions. The r
 
 **Rules.** The wording of the instructions lives in `skills/podcast-prompt/references/rules.md`, with a line on why each rule exists. Copy it to `rules.local.md` in your project folder, edit the copy, and set `rules_file`; the copy replaces the shipped file as a whole.
 
-**Themes and tags.** Read from the live Notion schema on every run. If no theme fits, the run adds one and tells you.
+**Themes and tags.** Read on every run from the live Notion schema, or from the card files in the Markdown folder. If no theme fits, the run adds one and tells you.
 
 ## Limitations
 
 - It drives the NotebookLM web app through the built-in browser. That is unofficial, and a UI change can break a step; the skill then falls back to a package you paste by hand. Dated UI notes are in `skills/learning-podcast/references/notebooklm.md`.
 - It acts in your signed-in Google account. Check that automated use fits the terms of your Google account.
-- Notion is the only storage backend in this version.
+- With Markdown cards, the first-time check is a keyword match over the folder, not an AI search.
 - The instruction box limit (5,000 characters) and the length options were measured in October 2026 and can change.
 - This is not an official Google, Notion or Anthropic project.
 
