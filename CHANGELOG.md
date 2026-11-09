@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0 (unreleased)
+## v1.0 (2026-11-09)
 
 First public version. Storage is Notion only.
 
