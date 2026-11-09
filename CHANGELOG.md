@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0 (unreleased)
+## v2.0 (2026-11-09)
 
 Cards can be stored in a local folder of Markdown files instead of Notion.
 
