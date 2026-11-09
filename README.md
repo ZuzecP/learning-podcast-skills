@@ -66,6 +66,8 @@ A topic runs the `deep-research` skill first and asks you scope questions. The r
 
 Tested: a single YouTube source and a research run with ten papers (author's runs, October 2026); the helper scripts and file layout (`python3 -m unittest discover -s tests -v`); the config gate and the setup skill as scenario exercises (`docs/measured-facts.md`).
 
+Acceptance run, 9 November 2026, on a fresh project folder with a new Notion database: `install.sh` (and a second run that changed nothing), the setup steps (database with all properties and both views created and verified, config written, gate passed), a dry run, and one real single-source run (a Wikipedia article, Deep Dive, English, Default length). The notebook, the source import, the summary, the prompt box and the Notion card all worked. Audio generation was accepted and was still running at the last check, so a finished audio is not part of this record. The setup was run by Claude following the skill's steps in an existing session, not in a fresh session started on the new folder.
+
 Not tested: re-running a finished request, resuming an interrupted research run, local and Google Drive files, Spotify links, non-English audio, whether an unticked source stays out of the audio, and the setup on an account other than the author's.
 
 ## Limitations

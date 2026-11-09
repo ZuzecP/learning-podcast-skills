@@ -12,3 +12,7 @@ First public version. Storage is Notion only.
 - The Czech-names rule as an optional locale rule (`names_rule`, off by default).
 - `scripts/install.sh`, `scripts/check-public.sh`, unit tests on synthetic fixtures, and CI.
 - Documentation: `docs/how-it-works.md`, `docs/measured-facts.md`.
+
+### Known issues
+- In a new database the Tags property has no options, so the first card is rejected until the options are added; the skill then adds them and retries.
+- `references/notion.md` names the Notion Markdown spec as `notion://docs/enhanced-markdown-spec`; it now resolves to the renamed `notion-flavored-markdown-spec`.
