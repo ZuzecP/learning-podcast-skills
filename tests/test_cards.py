@@ -1,3 +1,5 @@
+import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -146,6 +148,123 @@ class WriteTest(unittest.TestCase):
         with self.assertRaises(cards.CardError) as ctx:
             cards.write_card(self.folder, card)
         self.assertEqual(ctx.exception.reason, "bad_input")
+
+
+class FolderTestCase(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.folder = Path(self.tmp.name).resolve()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+
+class ReadTest(FolderTestCase):
+    def test_read_card_roundtrip(self):
+        card = sample(theme="People & Culture", **{"for": "a: b"},
+                      tags=["c#", "plain"], notebook="", first_time_topic=False)
+        path = cards.write_card(self.folder, card)
+        got = cards.read_card(path)
+        self.assertEqual(got["name"], "Psychological safety")
+        self.assertEqual(got["theme"], "People & Culture")
+        self.assertEqual(got["for"], "a: b")
+        self.assertEqual(got["tags"], ["c#", "plain"])
+        self.assertIs(got["first_time_topic"], False)
+        self.assertEqual(got["notebook"], "")
+        self.assertEqual(got["summary"], "A short summary.")
+
+    def test_read_card_unescapes_quotes(self):
+        path = cards.write_card(self.folder, sample(theme='say "hi"'))
+        self.assertEqual(cards.read_card(path)["theme"], 'say "hi"')
+
+
+class ScanFindTest(FolderTestCase):
+    def setUp(self):
+        super().setUp()
+        cards.write_card(self.folder, sample(name="Alpha", theme="Career", tags=["b", "a"], **{"for": "Me"}))
+        cards.write_card(self.folder, sample(name="Beta", theme="Career", tags=["a", "c"], **{"for": "Sam"},
+                                             summary="Talks about Garden soil."))
+
+    def test_scan_collects_distinct_sorted_values(self):
+        got = cards.scan(self.folder)
+        self.assertEqual(got["themes"], ["Career"])
+        self.assertEqual(got["tags"], ["a", "b", "c"])
+        self.assertEqual(got["for"], ["Me", "Sam"])
+        self.assertEqual(got["names"], ["Alpha", "Beta"])
+
+    def test_scan_skips_non_cards_and_alters_nothing(self):
+        plain = self.folder / "plain.md"
+        plain.write_bytes(b"just a note\n")
+        other = self.folder / "other.md"
+        other.write_bytes(b"---\ntitle: x\n---\nbody\n")
+        cards.scan(self.folder)
+        cards.find(self.folder, "x")
+        self.assertEqual(plain.read_bytes(), b"just a note\n")
+        self.assertEqual(other.read_bytes(), b"---\ntitle: x\n---\nbody\n")
+        self.assertEqual(cards.scan(self.folder)["names"], ["Alpha", "Beta"])
+
+    def test_scan_missing_folder(self):
+        with self.assertRaises(cards.CardError) as ctx:
+            cards.scan(self.folder / "nope")
+        self.assertEqual(ctx.exception.reason, "no_folder")
+
+    def test_find_hits_by_name_tag_and_summary_case_insensitive(self):
+        self.assertEqual([c["name"] for c in cards.find(self.folder, "ALPHA")], ["Alpha"])
+        self.assertEqual([c["name"] for c in cards.find(self.folder, "c")], ["Alpha", "Beta"])
+        self.assertEqual([c["name"] for c in cards.find(self.folder, "garden")], ["Beta"])
+        self.assertEqual([c["name"] for c in cards.find(self.folder, "zzz garden")], ["Beta"])
+
+    def test_find_miss(self):
+        self.assertEqual(cards.find(self.folder, "zzz"), [])
+
+    def test_find_empty_query_is_bad_input(self):
+        with self.assertRaises(cards.CardError) as ctx:
+            cards.find(self.folder, "  ")
+        self.assertEqual(ctx.exception.reason, "bad_input")
+
+    def test_name_info_reports_exists(self):
+        self.assertEqual(cards.name_info(self.folder, "Alpha"), {"stem": "Alpha", "exists": True})
+        self.assertEqual(cards.name_info(self.folder, "New: one"), {"stem": "New one", "exists": False})
+
+
+class CliTest(FolderTestCase):
+    def run_cli(self, *args):
+        script = ROOT / "skills/learning-podcast/scripts/cards.py"
+        done = subprocess.run([sys.executable, str(script), *args], capture_output=True, text=True)
+        return done.returncode, json.loads(done.stdout)
+
+    def test_name_write_and_refusals(self):
+        code, out = self.run_cli("name", "--folder", str(self.folder), "--name", "X: y")
+        self.assertEqual((code, out["ok"], out["stem"], out["exists"]), (0, True, "X y", False))
+        card_file = self.folder.parent / (self.folder.name + "-card.json")
+        card_file.write_text(json.dumps(sample(name="X: y")), encoding="utf-8")
+        try:
+            code, out = self.run_cli("write", "--folder", str(self.folder), "--card", str(card_file))
+            self.assertEqual((code, out["ok"]), (0, True))
+            self.assertTrue((self.folder / "X y.md").is_file())
+            code, out = self.run_cli("write", "--folder", str(self.folder), "--card", str(card_file))
+            self.assertEqual((code, out["ok"], out["reason"]), (2, False, "exists"))
+        finally:
+            card_file.unlink()
+
+    def test_scan_and_find_commands(self):
+        cards.write_card(self.folder, sample(name="Alpha"))
+        code, out = self.run_cli("scan", "--folder", str(self.folder))
+        self.assertEqual((code, out["ok"], out["names"]), (0, True, ["Alpha"]))
+        code, out = self.run_cli("find", "--folder", str(self.folder), "--query", "alpha")
+        self.assertEqual((code, out["ok"], [c["name"] for c in out["cards"]]), (0, True, ["Alpha"]))
+
+    def test_relative_folder_and_bad_arguments_are_bad_input(self):
+        code, out = self.run_cli("scan", "--folder", "relative/path")
+        self.assertEqual((code, out["reason"]), (2, "bad_input"))
+        code, out = self.run_cli("scan")
+        self.assertEqual((code, out["reason"]), (2, "bad_input"))
+
+    def test_unreadable_card_json_is_bad_input(self):
+        bad = self.folder / "bad.json"
+        bad.write_text("{not json", encoding="utf-8")
+        code, out = self.run_cli("write", "--folder", str(self.folder), "--card", str(bad))
+        self.assertEqual((code, out["reason"]), (2, "bad_input"))
 
 
 if __name__ == "__main__":
