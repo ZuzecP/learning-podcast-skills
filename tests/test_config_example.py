@@ -3,7 +3,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-KEYS = {"data_source_id", "database_url", "for_default", "language", "names_rule", "rules_file"}
+KEYS = {"backend", "cards_folder", "data_source_id", "database_url", "for_default", "language",
+        "names_rule", "rules_file", "themes"}
 
 
 class ConfigExampleTest(unittest.TestCase):
@@ -17,6 +18,11 @@ class ConfigExampleTest(unittest.TestCase):
     def test_ids_are_placeholders(self):
         self.assertEqual(self.config["data_source_id"], "REPLACE-ME")
         self.assertEqual(self.config["database_url"], "REPLACE-ME")
+
+    def test_backend_defaults_to_notion(self):
+        self.assertEqual(self.config["backend"], "notion")
+        self.assertIsNone(self.config["cards_folder"])
+        self.assertEqual(self.config["themes"], [])
 
     def test_defaults(self):
         self.assertEqual(self.config["for_default"], "Me")

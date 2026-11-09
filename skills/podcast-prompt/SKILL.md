@@ -13,7 +13,7 @@ Builds the Audio Overview instruction block. `scripts/assemble.py` copies the te
 - sources: title and kind of each source
 - people: full names of hosts, guests and authors as the sources write them, from the summary, the source titles or the video page
 - format: Deep Dive (default), Brief, Critique or Debate
-- first_time: true when no earlier Notion card covers the topic
+- first_time: true when no earlier card covers the topic
 - config: `names_rule` and `rules_file` from `learning-podcast.config.json`
 
 ## Steps

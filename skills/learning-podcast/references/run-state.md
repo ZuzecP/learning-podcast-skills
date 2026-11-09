@@ -8,10 +8,10 @@ One JSON file per run: `runs/<YYYY-MM-DD>-<slug>.json` in the project folder (sl
 - `key`: the format plus the sorted list of the user's source URLs and file paths; for Research, the format plus the topic as the user wrote it, in lowercase, plus the user's seed URLs. The same link with another format, or a reworded topic, is a new run.
 - `title`, `scenario`, `format`, `length`, `first_time`
 - `scope`: Research only, the user's answers to the scope questions; `question`: the scoped research question, as given to both lists
-- `sources`: one entry per source: title, url or path, kind, size (only for sources that go in; null otherwise), Notion type, origin (You = the user's links, Claude, NotebookLM, Both), in or out, reason
+- `sources`: one entry per source: title, url or path, kind, size (only for sources that go in; null otherwise), card source type, origin (You = the user's links, Claude, NotebookLM, Both), in or out, reason
 - `notebook_url`, `prompt`, `run_notes`
 - `done`: the steps finished, with 3a, 3b and 3c as separate entries
-- `card_url`; or `card_pending: true` plus `card` (properties and body) when the Notion write failed
+- `card_url`; or `card_pending: true` plus `card` (properties and body) when the card write failed
 
 ## At intake (step 0)
 
