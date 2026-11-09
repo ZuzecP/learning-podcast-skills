@@ -75,4 +75,4 @@ Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/): 
 
 ## Contributing
 
-See `CONTRIBUTING.md`. Run `python3 -m unittest discover -s tests -v` and `sh scripts/check-public.sh` before you push.
+See `CONTRIBUTING.md`. Before opening a pull request, run `python3 -m unittest discover -s tests -v` and `sh scripts/check-public.sh`. CI runs both.
