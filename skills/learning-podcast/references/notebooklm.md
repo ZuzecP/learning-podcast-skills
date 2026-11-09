@@ -14,7 +14,7 @@ Help-centre facts (October 2026) plus what was observed in the app. New observat
 ## Procedure
 1. Open: `preview_start` with `url: https://notebook.google.com` (`notebooklm.google.com` redirects there).
 2. Sign-in check: "Sign in to Gemini Notebook" (URL ending `/trynow`) means stop. Call `tabs_context`; if the pane is hidden, ask the user to press Cmd+Shift+B; then ask them to sign in. Continue after they confirm.
-3. Create a notebook: "New notebook" on the home page, or "Create notebook" in a notebook's header (use `find`). Save the URL (`URL:` line of `get_page_text`) to the run's state file at once. NotebookLM names the notebook after its first source, so set the card title after step 5: `form_input` on the title textbox in the header, then Return.
+3. Create a notebook: "New notebook" on the home page, or "Create notebook" in a notebook's header (use `find`). Save the URL (`URL:` line of `get_page_text`) to the run's state file at once. NotebookLM names the notebook after its first source, so set the card title after step 5 (Markdown backend: the title is the `stem` from `cards.py name`, see `markdown.md`): `form_input` on the title textbox in the header, then Return.
 4. Add sources (Sources panel, "Add sources"):
    - Web pages and YouTube: "Websites" option, then `form_input` on the textbox "Enter URLs" (placeholder "Paste any links"); several URLs separated by spaces or new lines. `computer` typing worked only the first time.
    - Files in the user's Google Drive mirror (`~/Library/CloudStorage/GoogleDrive-*`): "Drive", then search by file name. The built-in browser has no file-upload action. Untested.

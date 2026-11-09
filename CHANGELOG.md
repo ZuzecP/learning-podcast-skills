@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.0 (unreleased)
+
+Cards can be stored in a local folder of Markdown files instead of Notion.
+
+### Added
+- A Markdown card store: one `.md` file per card, properties as YAML frontmatter, the same four body sections as the Notion card. `skills/learning-podcast/scripts/cards.py` writes the files (never overwriting), scans the folder for themes and tags, and finds earlier cards by keyword. Reference: `skills/learning-podcast/references/markdown.md`.
+- Config keys `backend` (`notion` or `markdown`), `cards_folder` and `themes`.
+- `learning-podcast-setup` asks first whether cards go to Notion or to a local folder.
+
+### Changed
+- The README no longer lists a platform prerequisite or a "tested" chapter, and words the pre-pull-request check as a step before opening one.
+- Tests that asserted on documentation wording were removed; the code tests stay.
+
+### Compatibility
+- A v1.0 config without `backend` runs as Notion, unchanged.
+
 ## v1.0 (2026-11-09)
 
 First public version. Storage is Notion only.
