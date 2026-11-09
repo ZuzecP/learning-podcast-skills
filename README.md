@@ -31,16 +31,17 @@ This links the three skills into the project folder's `.claude/skills/`. Start C
 
 Open Claude Code on the project folder and say "set up learning podcast". The setup:
 
-1. Reports which prerequisites it found.
-2. Asks four questions, one at a time, each with a default: language (English), who the cards are for (`Me`), the starter themes, and the optional NAMES rule (off).
-3. Creates the Notion "Podcasts" database after telling you exactly what it will create, or adopts an existing database whose URL you paste after checking its properties.
-4. Writes `learning-podcast.config.json` in the project folder.
+1. Asks whether the cards go to Notion or to a local folder of Markdown files.
+2. Reports which prerequisites it found.
+3. Asks four questions, one at a time, each with a default: language (English), who the cards are for (`Me`), the starter themes, and the optional NAMES rule (off).
+4. Notion: creates the "Podcasts" database after telling you exactly what it will create, or adopts an existing database whose URL you paste after checking its properties. Markdown: asks for the folder (default `podcasts/` in the project folder) and creates it after your yes.
+5. Writes `learning-podcast.config.json` in the project folder.
 
 ## Use
 
-Paste a link, several links, file paths or a topic. Optional: a format (Deep Dive is the default; Brief, Critique, Debate), a length, "for <name>", or "dry run" (builds the prompt and the card content without touching NotebookLM or Notion).
+Paste a link, several links, file paths or a topic. Optional: a format (Deep Dive is the default; Brief, Critique, Debate), a length, "for <name>", or "dry run" (builds the prompt and the card content without touching NotebookLM or the card store).
 
-A topic runs the `deep-research` skill first and asks you scope questions. The run does not wait for the audio: generation finishes in NotebookLM, and the Notion card holds the sources and the exact prompt used. An interrupted run resumes when you send the same request again; each run keeps a state file in `runs/`.
+A topic runs the `deep-research` skill first and asks you scope questions. The run does not wait for the audio: generation finishes in NotebookLM, and the card holds the sources and the exact prompt used. An interrupted run resumes when you send the same request again; each run keeps a state file in `runs/`.
 
 ## Configuration
 
